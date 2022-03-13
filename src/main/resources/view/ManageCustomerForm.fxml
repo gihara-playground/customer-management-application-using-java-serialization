@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="427.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gihara.controller.ManageCustomerFormController">
+<AnchorPane prefHeight="467.0" prefWidth="600.0" style="-fx-background-color: #b2bec3;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gihara.controller.ManageCustomerFormController">
     <children>
-        <Label layoutX="123.0" layoutY="14.0" text="Customer Management Application" AnchorPane.topAnchor="14.0">
+        <Label layoutX="80.0" layoutY="14.0" text="Customer Management Application" AnchorPane.topAnchor="14.0">
             <font>
-                <Font name="Ubuntu Bold" size="23.0" />
+                <Font name="Ubuntu Bold" size="26.0" />
             </font>
         </Label>
         <VBox layoutX="24.0" layoutY="54.0" prefHeight="108.0" prefWidth="560.0" spacing="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
@@ -22,7 +22,7 @@
                 <HBox prefHeight="25.0" prefWidth="560.0" spacing="10.0">
                     <children>
                         <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" prefHeight="26.0" prefWidth="70.0" style="-fx-font-family: Ubuntu;" text="ID : " />
-                        <TextField fx:id="txtID" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="334.0" promptText="Eg. C001" style="-fx-font-family: Ubuntu;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtID" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="454.0" promptText="Eg. C001" style="-fx-font-family: Ubuntu;" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="560.0" spacing="10.0">
@@ -37,15 +37,23 @@
                         <TextField fx:id="txtAddress" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="334.0" promptText="Eg. Gampaha" style="-fx-font-family: Ubuntu;" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
+                <HBox layoutX="10.0" layoutY="80.0" prefHeight="25.0" prefWidth="560.0" spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" prefHeight="33.0" prefWidth="70.0" style="-fx-font-family: Ubuntu;" text="Picture : " />
+                        <TextField fx:id="txtPicture" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="334.0" promptText="Search profile photo here..." style="-fx-font-family: Ubuntu;" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#btnSearchPicture_OnAction" prefHeight="26.0" prefWidth="32.0" text="..." />
+                    </children>
+                </HBox>
             </children>
         </VBox>
-        <Button defaultButton="true" layoutX="241.0" layoutY="162.0" mnemonicParsing="false" onAction="#btnSaveCustomer_OnAction" prefHeight="26.0" prefWidth="119.0" style="-fx-font-family: Ubuntu;" text="Save Customer" />
+        <Button fx:id="btnManipulate" defaultButton="true" layoutX="236.0" layoutY="199.0" mnemonicParsing="false" onAction="#btnManipulateCustomer_OnAction" prefHeight="30.0" prefWidth="128.0" style="-fx-font-family: Ubuntu; -fx-background-radius: 10;" text="Save Customer" />
         <TableView fx:id="tblCustomers" layoutX="20.0" layoutY="213.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
             <columns>
                 <TableColumn prefWidth="75.0" style="-fx-font-family: Ubuntu;" text="ID" />
-                <TableColumn prefWidth="150.0" style="-fx-font-family: Ubuntu;" text="NAME" />
-                <TableColumn prefWidth="214.0" style="-fx-font-family: Ubuntu;" text="ADDRESS" />
-                <TableColumn prefWidth="120.0" style="-fx-font-family: Ubuntu;" text="OPTIONS" />
+                <TableColumn prefWidth="109.0" style="-fx-font-family: Ubuntu;" text="NAME" />
+                <TableColumn prefWidth="144.0" style="-fx-font-family: Ubuntu;" text="ADDRESS" />
+                <TableColumn prefWidth="132.0" style="-fx-font-family: ubuntu;" text="PROFILE PICTURE" />
+                <TableColumn prefWidth="99.0" style="-fx-font-family: Ubuntu;" text="OPTIONS" />
             </columns>
         </TableView>
     </children>

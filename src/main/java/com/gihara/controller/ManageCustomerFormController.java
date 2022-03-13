@@ -7,6 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -16,10 +19,12 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class ManageCustomerFormController {
-    private final Path dbPath = Paths.get("database/customers.dep8db");
+    private final Path dbPath = Paths.get("database/customers.data");
     public TextField txtID;
     public TextField txtName;
     public TextField txtAddress;
+    public TextField txtPicture;
+    public Button btnManipulate;
     public TableView<Customer> tblCustomers;
 
     public void initialize() {
@@ -27,7 +32,18 @@ public class ManageCustomerFormController {
         tblCustomers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("name"));
         tblCustomers.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        TableColumn<Customer, Button> lastCol = (TableColumn<Customer, Button>) tblCustomers.getColumns().get(3);
+//        tblCustomers.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("picture"));
+
+        TableColumn<Customer, ImageView> fourthCol = (TableColumn<Customer, ImageView>) tblCustomers.getColumns().get(3);
+        fourthCol.setCellValueFactory(param -> {
+            ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(param.getValue().getPictureBytes())));
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+            return new ReadOnlyObjectWrapper<>(imageView);
+        });
+
+
+        TableColumn<Customer, Button> lastCol = (TableColumn<Customer, Button>) tblCustomers.getColumns().get(4);
         lastCol.setCellValueFactory(param -> {
             Button btnDelete = new Button("Delete");
             btnDelete.setOnAction(event -> {
@@ -36,11 +52,10 @@ public class ManageCustomerFormController {
             });
             return new ReadOnlyObjectWrapper<>(btnDelete);
         });
-
         initDatabase();
     }
 
-    public void btnSaveCustomer_OnAction(ActionEvent actionEvent) {
+    public void createCustomer() throws IOException {
 
         if (!txtID.getText().matches("C\\d{3}") ||
                 tblCustomers.getItems().stream().anyMatch(c -> c.getId().equalsIgnoreCase(txtID.getText()))) {
@@ -55,12 +70,23 @@ public class ManageCustomerFormController {
             txtAddress.requestFocus();
             txtAddress.selectAll();
             return;
+        } else if (txtPicture.getText().trim().isEmpty()) {
+            txtPicture.requestFocus();
+            txtPicture.selectAll();
+            return;
         }
+
+        InputStream is = Files.newInputStream(Paths.get(txtPicture.getText()));
+        byte[] picBuffer = new byte[is.available()];
+        is.read(picBuffer);
+        is.close();
 
         Customer newCustomer = new Customer(
                 txtID.getText(),
                 txtName.getText(),
-                txtAddress.getText());
+                txtAddress.getText(),
+                picBuffer);
+
         tblCustomers.getItems().add(newCustomer);
 
         boolean result = saveCustomers();
@@ -72,19 +98,17 @@ public class ManageCustomerFormController {
             txtID.clear();
             txtName.clear();
             txtAddress.clear();
+            txtPicture.clear();
         }
-
         txtID.requestFocus();
     }
 
     private void initDatabase() {
         try {
-
             if (!Files.exists(dbPath)) {
                 Files.createDirectories(dbPath.getParent());
                 Files.createFile(dbPath);
             }
-
             loadAllCustomers();
 
         } catch (Exception e) {
@@ -117,4 +141,20 @@ public class ManageCustomerFormController {
         }
     }
 
+    public void btnSearchPicture_OnAction(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("image","*.jpeg", "*.jpg", "*.gif", "*.png", "*.bmp"));
+        fileChooser.setTitle("Select an image");
+        File file = fileChooser.showOpenDialog(txtID.getScene().getWindow());
+        txtPicture.setText(file!=null?file.getAbsolutePath():"");
+    }
+
+    public void btnManipulateCustomer_OnAction(ActionEvent actionEvent) throws IOException {
+        if (btnManipulate.getText().matches("Save Customer")){
+            createCustomer();
+        }
+        else {
+
+        }
+    }
 }
